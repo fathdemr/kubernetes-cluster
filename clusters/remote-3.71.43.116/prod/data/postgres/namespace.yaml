@@ -1,0 +1,8 @@
+# ============================
+# PostgreSQL Namespace
+# Isolated environment for PostgreSQL database
+# ============================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: data

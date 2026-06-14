@@ -1,0 +1,11 @@
+# ============================
+# PostgreSQL Base Configuration
+# Production-ready PostgreSQL setup
+# ============================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - secrets/blockcertify-secret.yaml
+  - cluster.yaml
+  - databases/blokcerfity-db.yaml

@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: blockcertify-db
+  namespace: data
+spec:
+  name: blockcertify
+  owner: blockcertify_user
+  cluster:
+    name: postgres
+  encoding: UTF8
