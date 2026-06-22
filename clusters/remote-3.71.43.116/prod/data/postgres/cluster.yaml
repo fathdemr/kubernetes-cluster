@@ -18,6 +18,12 @@ spec:
     storageClass: longhorn
 
   postgresql:
+    pg_hba:
+      # Her kullanıcı sadece kendi db'sine bağlanabilir
+      - "host blockcertify blockcertify_user all scram-sha-256"
+      - "host \"diyet-app\" \"diyet-app-user\" all scram-sha-256"
+      - "host blockcertify all all reject"
+      - "host \"diyet-app\" all all reject"
     parameters:
       max_connections: "100"
       shared_buffers: "256MB"
