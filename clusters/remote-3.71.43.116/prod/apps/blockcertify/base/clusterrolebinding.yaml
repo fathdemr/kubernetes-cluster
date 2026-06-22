@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: blockcertify-rolebinding
+  labels:
+    app: blockcertify
+roleRef:
+  apiGroup:  rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: blockcertify-role
+subjects:
+  - kind: ServiceAccount
+    name: blockcertify
+    namespace: blockcertify

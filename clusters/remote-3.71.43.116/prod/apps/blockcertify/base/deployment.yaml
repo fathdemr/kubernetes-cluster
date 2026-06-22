@@ -1,0 +1,106 @@
+# ============================
+# Deployment
+# Soberx - Base Deployment
+# ============================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: blockcertify
+  labels:
+    app: blockcertify
+  annotations:
+    # Reloader watches this Secret and restarts pods when it changes
+    secret.reloader.stakater.com/reload: "blockcertify-config"
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  revisionHistoryLimit: 2
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blockcertify
+  template:
+    metadata:
+      labels:
+        app: blockcertify
+      annotations:
+        # Image updates managed by Flux ImageUpdateAutomation
+        flux.managed: "true"
+    spec:
+      # Service account for RBAC
+      serviceAccountName: soberx
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+      imagePullSecrets:
+        - name: docker-registry-secret
+      containers:
+        - name: blockcertify
+          # Image tag is managed by Flux ImageUpdateAutomation
+          # The marker below tells Flux which ImagePolicy to use for updates
+          image: b1dev/soberx:2026.06.12110311 # {"$imagepolicy": "flux-system:soberx"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5075
+              name: http
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "5075"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+                  
+          volumeMounts:
+            # Config secret as file mount in root directory (app expects it there)
+            - name: config
+              mountPath: /config.yaml
+              subPath: config.yaml
+              readOnly: true
+            # Temporary directories for readOnlyRootFilesystem
+            - name: tmp
+              mountPath: /tmp
+            - name: var-tmp
+              mountPath: /var/tmp
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          # Health checks
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: config
+          secret:
+            secretName: soberx-config
+        - name: tmp
+          emptyDir: { }
+        - name: var-tmp
+          emptyDir: { }
