@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
   name: diyet-app-db

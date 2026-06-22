@@ -42,3 +42,10 @@ spec:
         passwordSecret:
           name: blockcertify-db-credentials
         comment: "Blockcertify application db user"
+
+      - name: diyet-app-user
+        ensure: present
+        login: true
+        passwordSecret:
+          name: diyet-app-db-credentials
+        comment: "Diyet App application db user"

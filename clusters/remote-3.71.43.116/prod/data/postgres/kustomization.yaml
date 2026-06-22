@@ -7,5 +7,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - secrets/blockcertify-secret.yaml
+  - secrets/diyet-app-secret.yaml
   - cluster.yaml
   - databases/blokcerfity-db.yaml
+  - databases/diyet-app-db.yaml
