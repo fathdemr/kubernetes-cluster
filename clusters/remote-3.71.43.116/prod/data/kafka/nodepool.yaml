@@ -1,20 +1,39 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaNodePool
 metadata:
+  creationTimestamp: "2026-06-26T15:04:57Z"
+  generation: 1
+  labels:
+    kustomize.toolkit.fluxcd.io/name: data-kafka
+    kustomize.toolkit.fluxcd.io/namespace: flux-system
+    strimzi.io/cluster: kafka-cluster
   name: kafka-node-pool
   namespace: kafka
-  labels:
-    strimzi.io/cluster: kafka-cluster
+  resourceVersion: "2594333"
+  uid: 53c7d054-4bb0-40de-9267-5ced5f216f45
 spec:
   replicas: 3
   roles:
-    - controller
-    - broker
+  - controller
+  - broker
   storage:
     type: jbod
     volumes:
-      - id: 0
-        type: persistent-claim
-        size: 10Gi
-        deleteClaim: false
-        class: longhorn-single
+    - class: longhorn-single
+      deleteClaim: false
+      id: 0
+      size: 10Gi
+      type: persistent-claim
+status:
+  clusterId: 1vE26UkcRveymu6XZ8vEfw
+  conditions: []
+  labelSelector: strimzi.io/cluster=kafka-cluster,strimzi.io/name=kafka-cluster-kafka,strimzi.io/kind=Kafka,strimzi.io/pool-name=kafka-node-pool
+  nodeIds:
+  - 0
+  - 1
+  - 2
+  observedGeneration: 1
+  replicas: 3
+  roles:
+  - controller
+  - broker
