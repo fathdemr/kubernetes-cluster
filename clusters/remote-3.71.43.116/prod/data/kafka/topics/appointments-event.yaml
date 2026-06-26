@@ -1,14 +1,14 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaTopic
 metadata:
+  name: appointments-event
+  namespace: kafka
   finalizers:
     - strimzi.io/topic-operator
   labels:
     kustomize.toolkit.fluxcd.io/name: data-kafka
     kustomize.toolkit.fluxcd.io/namespace: flux-system
     strimzi.io/cluster: kafka-cluster
-  name: appointments-event
-  namespace: kafka
 spec:
   partitions: 3
   replicas: 1
