@@ -1,10 +1,26 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaTopic
 metadata:
+  creationTimestamp: "2026-06-26T15:51:47Z"
+  finalizers:
+  - strimzi.io/topic-operator
+  generation: 1
+  labels:
+    kustomize.toolkit.fluxcd.io/name: data-kafka
+    kustomize.toolkit.fluxcd.io/namespace: flux-system
+    strimzi.io/cluster: kafka-cluster
   name: notifications
   namespace: kafka
-  labels:
-    strimzi.io/cluster: kafka-cluster
+  resourceVersion: "2603486"
+  uid: ee8e69f5-b283-4845-9332-62b229ba1ff3
 spec:
   partitions: 1
   replicas: 1
+status:
+  conditions:
+  - lastTransitionTime: "2026-06-26T15:51:48.403689501Z"
+    status: "True"
+    type: Ready
+  observedGeneration: 1
+  topicId: KhyAhfKhTke_oGzRAvy56Q
+  topicName: notifications
