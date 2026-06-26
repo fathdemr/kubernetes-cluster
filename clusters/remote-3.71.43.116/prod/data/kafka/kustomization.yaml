@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - configmap.yaml
   - nodepool.yaml
-  - topics/notification-topic.yaml
+  - topics/appointments-event.DLT.yaml
+  - topics/appointments-event.yaml
