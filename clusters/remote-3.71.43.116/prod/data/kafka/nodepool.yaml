@@ -17,3 +17,4 @@ spec:
         type: persistent-claim
         size: 10Gi
         deleteClaim: false
+        class: longhorn-single
