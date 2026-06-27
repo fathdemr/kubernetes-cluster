@@ -8,31 +8,16 @@ kind: Ingress
 metadata:
   name: diyet-app-live-ingress
   annotations:
-    # NGINX Ingress Controller
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-
-    # cert-manager annotations for Let's Encrypt
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    cert-manager.io/acme-challenge-type: http01
-
-    # Additional NGINX optimizations
-    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-
   labels:
     app: diyet-app
     environment: live
 spec:
-  # TLS configuration with Let's Encrypt
+  ingressClassName: traefik
   tls:
     - hosts:
         - api.blockcertfiy.uk
       secretName: diyet-app-live-tls-secret
-
-  # Routing rules
   rules:
     - host: api.blockcertfiy.uk
       http:
