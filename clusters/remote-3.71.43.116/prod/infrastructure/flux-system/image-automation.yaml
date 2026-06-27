@@ -47,7 +47,7 @@ spec:
       author:
         email: flux@diyet-app
         name: flux-bot
-      messageTemplate: "chore: diyet-app image {{range .Updated.Images}}{{println .}}{{end}}"
+      messageTemplate: "chore: diyet-app image {{range .Changed.Changes}}{{println .OldValue}} -> {{println .NewValue}}{{end}}"
     push:
       branch: main
   update:
