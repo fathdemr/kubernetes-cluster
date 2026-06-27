@@ -12,31 +12,24 @@ spec:
               value: "5076"
             - name: JAVA_TOOL_OPTIONS
               value: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
-            # Redis
-            - name: REDIS_HOST
-              value: "redis.data.svc.cluster.local"
-            - name: REDIS_PORT
-              value: "6379"
-            # PostgreSQL
-            - name: DB_HOST
-              value: "postgres-rw.data.svc.cluster.local"
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: diyet-app-secrets
-                  key: db-name
-            - name: DB_USERNAME
+            # PostgreSQL - internal cluster JDBC URL
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres-rw.data.svc.cluster.local:5432/diyet-app"
+            - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: diyet-app-secrets
                   key: db-username
-            - name: DB_PASSWORD
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: diyet-app-secrets
                   key: db-password
-            # Kafka
+            # Redis - internal cluster address
+            - name: REDIS_HOST
+              value: "redis.data.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+            # Kafka - internal bootstrap
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
