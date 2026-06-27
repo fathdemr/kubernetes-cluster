@@ -38,7 +38,7 @@ spec:
       containers:
         - name: diyet-app
           # Image tag is managed by Flux ImageUpdateAutomation
-          image: fathdemr/diyet-app-backend # {"$imagepolicy": "flux-system:diyet-app-backend"}
+          image: fathdemr/diyet-app-backend:2026.06.28013648 # {"$imagepolicy": "flux-system:diyet-app-backend"}
           imagePullPolicy: Always
           ports:
             - name: http
