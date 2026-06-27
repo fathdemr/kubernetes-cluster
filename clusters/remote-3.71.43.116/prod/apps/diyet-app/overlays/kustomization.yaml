@@ -26,6 +26,9 @@ namespace: diyet-app
 # NOTE: Image updates are managed by Flux ImageUpdateAutomation
 # Flux scans repository and updates image tags automatically
 
+patches:
+  - path: environment-patch.yaml
+
 # Labels for live environment (modern syntax)
 labels:
   - pairs:

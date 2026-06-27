@@ -15,54 +15,55 @@ spec:
   policyTypes:
     - Ingress
     - Egress
-  # Allow ingress from nginx-ingress
   ingress:
     - from:
         - namespaceSelector:
             matchLabels:
-              name: ingress-nginx
+              kubernetes.io/metadata.name: ingress-nginx
       ports:
         - protocol: TCP
           port: 5076
-  # Allow egress to required services
   egress:
     # DNS
     - to:
         - namespaceSelector:
             matchLabels:
-              name: kube-system
+              kubernetes.io/metadata.name: kube-system
       ports:
         - protocol: UDP
           port: 53
-    # PostgreSQL (internal - postgres.postgres-env.svc.cluster.local:5432)
+    # PostgreSQL (postgres-rw.data.svc.cluster.local:5432)
     - to:
         - namespaceSelector:
             matchLabels:
-              name: postgres-env
+              kubernetes.io/metadata.name: data
       ports:
         - protocol: TCP
           port: 5432
-    # Redis (internal - redis.redis-env.svc.cluster.local:6379)
+    # Redis (redis.data.svc.cluster.local:6379)
     - to:
         - namespaceSelector:
             matchLabels:
-              name: redis-env
+              kubernetes.io/metadata.name: data
       ports:
         - protocol: TCP
           port: 6379
-    # Kafka (internal - redis.redis-env.svc.cluster.local:6379)
+    # Kafka (kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092)
     - to:
         - namespaceSelector:
             matchLabels:
-              name: kafka-env
+              kubernetes.io/metadata.name: kafka
       ports:
         - protocol: TCP
-          port: 9094
-    # External HTTPS/HTTP (Apple sign-in, API calls)
+          port: 9092
+    # External HTTPS (Apple sign-in, API calls)
     - to:
-        - namespaceSelector: {}
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/8
+              - 172.16.0.0/12
+              - 192.168.0.0/16
       ports:
         - protocol: TCP
           port: 443
-        - protocol: TCP
-          port: 80
