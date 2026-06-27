@@ -33,3 +33,9 @@ spec:
             # Kafka - internal bootstrap
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            # Resend email service
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: diyet-app-secrets
+                  key: resend-api-key
