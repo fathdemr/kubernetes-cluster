@@ -42,7 +42,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 5075
+              containerPort: 5076
               protocol: TCP
           env:
             - name: JAVA_TOOL_OPTIONS

@@ -8,6 +8,8 @@ spec:
       containers:
         - name: diyet-app
           env:
+            - name: SERVER_PORT
+              value: "5076"
             - name: JAVA_TOOL_OPTIONS
               value: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
             # PostgreSQL - internal cluster JDBC URL

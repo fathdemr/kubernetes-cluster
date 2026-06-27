@@ -22,7 +22,7 @@ spec:
               kubernetes.io/metadata.name: ingress-nginx
       ports:
         - protocol: TCP
-          port: 5075
+          port: 5076
   egress:
     # DNS
     - to:
