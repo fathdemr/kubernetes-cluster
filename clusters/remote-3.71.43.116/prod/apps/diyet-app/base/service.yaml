@@ -1,0 +1,19 @@
+# ============================
+# Service
+# Diyet Appp - Base Service
+# ============================
+apiVersion: v1
+kind: Service
+metadata:
+  name: diyet-app-svc
+  labels:
+    app: diyet-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: diyet-app

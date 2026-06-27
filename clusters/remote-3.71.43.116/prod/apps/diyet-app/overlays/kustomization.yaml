@@ -1,0 +1,32 @@
+# ============================
+# Kustomization - Live Overlay
+# Diyet App - Live Environment
+# ============================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: diyet-app-live
+
+resources:
+  - ../base
+  - namespace.yaml
+  - ingress.yaml
+  - docker-registry-secret.yaml
+
+# Disable hash suffix for generated secrets
+generatorOptions:
+  disableNameSuffixHash: true
+
+# Target namespace
+namespace: diyet-app
+
+# NOTE: Image updates are managed by Flux ImageUpdateAutomation
+# Flux scans repository and updates image tags automatically
+
+# Labels for live environment (modern syntax)
+labels:
+  - pairs:
+      environment: live
+      tier: production
+    includeSelectors: false
+    includeTemplates: true

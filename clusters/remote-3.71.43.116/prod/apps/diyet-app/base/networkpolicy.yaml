@@ -1,0 +1,68 @@
+# ============================
+# NetworkPolicy
+# Diyet App - Basic network security policy
+# ============================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: diyet-app-netpol
+  labels:
+    app: diyet-app
+spec:
+  podSelector:
+    matchLabels:
+      app: diyet-app
+  policyTypes:
+    - Ingress
+    - Egress
+  # Allow ingress from nginx-ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 5076
+  # Allow egress to required services
+  egress:
+    # DNS
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+    # PostgreSQL (internal - postgres.postgres-env.svc.cluster.local:5432)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: postgres-env
+      ports:
+        - protocol: TCP
+          port: 5432
+    # Redis (internal - redis.redis-env.svc.cluster.local:6379)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: redis-env
+      ports:
+        - protocol: TCP
+          port: 6379
+    # Kafka (internal - redis.redis-env.svc.cluster.local:6379)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: kafka-env
+      ports:
+        - protocol: TCP
+          port: 9094
+    # External HTTPS/HTTP (Apple sign-in, API calls)
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 80

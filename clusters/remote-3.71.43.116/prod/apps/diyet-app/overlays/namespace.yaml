@@ -1,0 +1,12 @@
+# ============================
+# Namespace - Live Environment
+# Diyet App Live Environment
+# ============================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: diyet-app
+  labels:
+    name: diyet-app
+    environment: live
+    app: diyet-app

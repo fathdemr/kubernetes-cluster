@@ -1,14 +1,26 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaTopic
 metadata:
-  name: appointments-event
-  namespace: kafka
+  creationTimestamp: "2026-06-26T17:14:52Z"
   finalizers:
-    - strimzi.io/topic-operator
+  - strimzi.io/topic-operator
+  generation: 1
   labels:
     kustomize.toolkit.fluxcd.io/name: data-kafka
     kustomize.toolkit.fluxcd.io/namespace: flux-system
     strimzi.io/cluster: kafka-cluster
+  name: appointments-event
+  namespace: kafka
+  resourceVersion: "2618991"
+  uid: ec64796e-3cc8-458e-8a2a-307b63e171ea
 spec:
   partitions: 3
   replicas: 1
+status:
+  conditions:
+  - lastTransitionTime: "2026-06-26T17:14:53.256815529Z"
+    status: "True"
+    type: Ready
+  observedGeneration: 1
+  topicId: e60RI2bzQI2KxSg5gaq9Bg
+  topicName: appointments-event

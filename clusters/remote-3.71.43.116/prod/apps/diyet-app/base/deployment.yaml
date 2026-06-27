@@ -1,0 +1,87 @@
+# ============================
+# Deployment
+# Diyet App - Base Deployment
+# ============================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: diyet-app
+  labels:
+    app: diyet-app
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  revisionHistoryLimit: 2
+  replicas: 1
+  selector:
+    matchLabels:
+      app: diyet-app
+  template:
+    metadata:
+      labels:
+        app: diyet-app
+      annotations:
+        flux.managed: "true"
+    spec:
+      serviceAccountName: diyet-app
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+      imagePullSecrets:
+        - name: docker-registry-secret
+      containers:
+        - name: diyet-app
+          # Image tag is managed by Flux ImageUpdateAutomation
+          image: fathdemr/diyet-app-backend # {"$imagepolicy": "flux-system:diyet-app-backend"}
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 5076
+              protocol: TCP
+          env:
+            - name: SERVER_PORT
+              value: "5076"
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 90
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: tmp
+          emptyDir: {}

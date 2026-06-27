@@ -1,12 +1,16 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaNodePool
 metadata:
+  creationTimestamp: "2026-06-26T15:35:18Z"
+  generation: 1
   labels:
     kustomize.toolkit.fluxcd.io/name: data-kafka
     kustomize.toolkit.fluxcd.io/namespace: flux-system
     strimzi.io/cluster: kafka-cluster
   name: kafka-node-pool
   namespace: kafka
+  resourceVersion: "2600239"
+  uid: 88745c85-ea32-4f69-b336-b75161262af9
 spec:
   replicas: 1
   roles:
