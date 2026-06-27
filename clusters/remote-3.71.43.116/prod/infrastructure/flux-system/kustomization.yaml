@@ -6,3 +6,4 @@ resources:
 - data-sync.yaml
 - apps-sync.yaml
 - image-automation.yaml
+- cert-manager-sync.yaml
