@@ -1,0 +1,55 @@
+# ============================
+# Flux Image Automation
+# diyet-app-backend — Docker Hub image tracking
+# ============================
+
+# Docker Hub'daki fathdemr/diyet-app-backend reposunu tara
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: diyet-app-backend
+  namespace: flux-system
+spec:
+  image: fathdemr/diyet-app-backend
+  interval: 1m0s
+  secretRef:
+    name: docker-registry-secret
+---
+# En son tag'i seç (semver varsa semver, yoksa latest)
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: diyet-app-backend
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: diyet-app-backend
+  policy:
+    semver:
+      range: ">=0.0.1"
+---
+# Yeni tag tespit edilince deployment.yaml'ı güncelle ve git'e push et
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageUpdateAutomation
+metadata:
+  name: diyet-app-backend
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: flux@diyet-app
+        name: flux-bot
+      messageTemplate: "chore: diyet-app image {{range .Updated.Images}}{{println .}}{{end}}"
+    push:
+      branch: main
+  update:
+    path: ./clusters/remote-3.71.43.116/prod/apps/diyet-app
+    strategy: Setters

@@ -5,3 +5,4 @@ resources:
 - gotk-sync.yaml
 - data-sync.yaml
 - apps-sync.yaml
+- image-automation.yaml
